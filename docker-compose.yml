@@ -1,0 +1,10 @@
+version: "3.1"
+
+services:
+  cli:
+    image: chialab/php-dev:8.0
+  composer:
+    image: composer/composer:2.0.13
+    command: install
+    volumes:
+      - .:/app
