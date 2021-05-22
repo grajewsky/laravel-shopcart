@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-class TestCase
+class TestCase extends \Orchestra\Testbench\TestCase
 {
 
 }
