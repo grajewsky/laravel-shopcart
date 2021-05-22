@@ -1,0 +1,29 @@
+{
+    "name": "gappsky/laracart",
+    "description": "Laravel/Lumen shop cart",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Laracart\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "Laracart\\Tests\\": "tests/"
+    },
+    "authors": [
+        {
+            "name": "Lukas Grajewsky",
+            "email": "grajewski.lukasz@wp.pl"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "illuminate/container": "^7|^8",
+        "illuminate/support": "^7|^8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9",
+        "orchestra/testbench": "v5.18.0"
+    }
+}
