@@ -10,6 +10,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     public function register()
     {
-        $this->app->bind("laracart", fn($app) => new Laracart());
+        $this->mergeConfigFrom(__DIR__ . "/../../config/config.php", "laracart");
+        // $this->app->bind("laracart", fn($app) => new Laracart($this->app['session']));
     }
 }
