@@ -25,6 +25,7 @@ class LaracartTest extends TestCase
             "price" => new Money(99, new Currency("PLN"))
         ]);
 
+        $this->assertCount(0, Laracart::items());
         $this->assertInstanceOf(Product::class, $product);
         $this->assertCount(1, Laracart::items());
     }
