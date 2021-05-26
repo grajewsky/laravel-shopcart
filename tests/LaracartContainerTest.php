@@ -11,11 +11,6 @@ use Laracart\Providers\ServiceProvider;
 
 class LaracartContainerTest extends TestCase
 {
-    protected function getPackageProviders($app)
-    {
-        return [ServiceProvider::class];
-    }
-
     /**
      *
      * @covers
