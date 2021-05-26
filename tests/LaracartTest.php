@@ -18,14 +18,13 @@ class LaracartTest extends TestCase
 {
     public function testAddMethod()
     {
+        $this->assertCount(0, Laracart::items());
         $product = Laracart::add([
             "id" => 1,
             "name" => "test",
             "quantity" => 1,
             "price" => new Money(99, new Currency("PLN"))
         ]);
-
-        $this->assertCount(0, Laracart::items());
         $this->assertInstanceOf(Product::class, $product);
         $this->assertCount(1, Laracart::items());
     }
