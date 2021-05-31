@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Laracart;
 
+use Laracart\Contracts\CartPersist;
 use Laracart\Events\ItemAdded;
 use Laracart\Contracts\Product;
 use Laracart\Events\ItemDeleted;
 use Laracart\Events\CartCleared;
 use Laracart\Shapes\ProductShape;
 use Illuminate\Events\Dispatcher;
-use Laracart\Events\ProductEvent;
 use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Support\Collection;
 use Illuminate\Session\SessionManager;
 use Laracart\Shapes\ConfigurationShape;
 
-class Laracart
+class Laracart implements CartPersist
 {
     /**
      * @var Collection<Product> $items
@@ -111,6 +111,11 @@ class Laracart
         $this->items = new Collection();
         $this->saveItems(new Collection());
         event(new CartCleared($items));
+    }
+
+    public function save(): bool
+    {
+        return false;
     }
 
 }
