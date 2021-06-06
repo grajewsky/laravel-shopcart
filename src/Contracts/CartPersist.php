@@ -6,7 +6,7 @@ namespace Laracart\Contracts;
 
 use Laracart\Exceptions\CartPersistException;
 
-interface CartPersist
+interface Storable
 {
     /**
      * @return bool
