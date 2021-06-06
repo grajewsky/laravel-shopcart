@@ -10,6 +10,7 @@ final class ConfigurationShape
         'session_key_prefix' => 'string',
         'price_scale' => 'int',
         'currency' => 'string',
-        'tax_percent' => 'float|int'
+        'tax_percent' => 'float|int',
+        'persist' => 'array'
     ];
 }
