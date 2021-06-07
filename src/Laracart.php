@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Laracart;
 
-use Laracart\Contracts\CartPersist;
+use Laracart\Contracts\Storable;
 use Laracart\Events\ItemAdded;
 use Laracart\Contracts\Product;
 use Laracart\Events\ItemDeleted;
@@ -13,17 +13,18 @@ use Laracart\Shapes\ProductShape;
 use Illuminate\Events\Dispatcher;
 use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Support\Collection;
+use Laracart\Contracts\CartPersist;
 use Illuminate\Session\SessionManager;
 use Laracart\Shapes\ConfigurationShape;
 
-class Laracart implements CartPersist
+class Laracart implements Storable
 {
     /**
      * @var Collection<Product> $items
      */
     private Collection $items;
 
-    private string $sessionKey;
+    private string $cartId;
 
     public function __construct(
         #[ArrayShape(ConfigurationShape::SHAPE)]
@@ -32,12 +33,13 @@ class Laracart implements CartPersist
         private Dispatcher $dispatcher
     ) {
         $this->items = new Collection();
-        $this->sessionKey = "cart";
+        $this->cartId = "cart";
     }
 
     private function saveItems(Collection $items, ?string $sessionKey = null): void
     {
         $sessionKey ??= $this->getSessionItemsKey();
+
         $this->sessionManager->put($sessionKey, $items);
     }
 
@@ -48,7 +50,7 @@ class Laracart implements CartPersist
 
     private function getSessionItemsKey(): string
     {
-        return $this->configuration['session_key_prefix'] . $this->sessionKey ."_items";
+        return $this->configuration['session_key_prefix'] . $this->cartId ."_items";
     }
 
     private function addProductFromArray(#[ArrayShape(ProductShape::SHAPE)] array $product)
@@ -63,7 +65,7 @@ class Laracart implements CartPersist
 
     public function session(string $key)
     {
-        $this->sessionKey = $key;
+        $this->cartId = $key;
     }
 
     public function add(
@@ -71,11 +73,8 @@ class Laracart implements CartPersist
         array|Product $product
     ): Product {
         if (is_array($product)) {
-            $productImpl = $this->addProductFromArray($product);
-            $this->items->add($productImpl);
-            return $productImpl;
+            $product = $this->addProductFromArray($product);
         }
-
         $this->items->add($product);
         $this->saveItems($this->items);
         $this->dispatch(new ItemAdded($product));
@@ -113,9 +112,31 @@ class Laracart implements CartPersist
         event(new CartCleared($items));
     }
 
-    public function save(): bool
+    /**
+     * @param string $identifier
+     * @return bool
+     * @throws Exceptions\CartPersistException
+     */
+
+    public function store(string $identifier): bool
     {
-        return false;
+        $persistConfiguration = $this->configuration['persist'];
+        $uses = $persistConfiguration['uses'];
+        $availableDrivers = $persistConfiguration['drivers'];
+        $products = $this->items();
+
+        foreach ($uses as $use) {
+            if (array_key_exists($use, $availableDrivers)) {
+                /** @var CartPersist $cartPersist */
+                $cartPersist = app($availableDrivers[$use]);
+                $status = $cartPersist->store($identifier, $products);
+                if ($status === false) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 }
