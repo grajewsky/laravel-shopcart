@@ -6,9 +6,9 @@ return [
     'currency' => 'USD',
     'tax_percent' => 23,
     'persist' => [
-        'uses' => ['session'],
+        'uses' => [],
         'drivers' => [
-            'session' => \Laracart\Services\Persist\Session::class
+            'eloquent' => \Laracart\Services\Persist\Eloquent::class
         ]
     ]
 ];
