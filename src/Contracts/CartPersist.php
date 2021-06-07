@@ -10,9 +10,10 @@ use Laracart\Exceptions\CartPersistException;
 interface CartPersist
 {
     /**
+     * @param string $identifier
      * @param Collection<\Laracart\Concrete\Product> $products
      * @return bool
      * @throws CartPersistException
      */
-    public function save(Collection $products): bool;
+    public function store(string $identifier, Collection $products): bool;
 }
