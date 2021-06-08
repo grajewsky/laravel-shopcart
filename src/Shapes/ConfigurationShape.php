@@ -11,6 +11,7 @@ final class ConfigurationShape
         'price_scale' => 'int',
         'currency' => 'string',
         'tax_percent' => 'float|int',
-        'persist' => 'array'
+        'persist' => 'array',
+        'eloquent' => 'array'
     ];
 }
