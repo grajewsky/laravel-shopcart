@@ -14,6 +14,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->mergeConfigFrom(__DIR__ . "/../../config/config.php", "laracart");
         $this->app->singleton(Eloquent::class, fn($app) => new Eloquent(
             config('laracart', []),
+            $this->app['events']
         );
 
         $this->app->singleton("laracart", fn($app) => new Laracart(
