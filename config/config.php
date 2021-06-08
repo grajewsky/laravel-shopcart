@@ -10,5 +10,9 @@ return [
         'drivers' => [
             'eloquent' => \Laracart\Services\Persist\Eloquent::class
         ]
+    ],
+
+    'eloquent' => [
+        'table' => 'laracart',
     ]
 ];
