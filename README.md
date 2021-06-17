@@ -63,7 +63,7 @@ Package has implements Eloquent driver `Laracart\Services\Persist\Eloquent::clas
 
 Functionality has persist interface to replace driver. `Laracart\Contracts\CartPersist`
 
-Interface `CartPersist` provide methods:
+Interface `CartPersist` provide:
 - `store(string $identifier, Collection<Product> $products): bool`
 - `restore(string $identifier): Collection<Product> throws Laracart\ExceptionsNotFoundException`
 
